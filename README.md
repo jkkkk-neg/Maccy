@@ -1,3 +1,8 @@
+> Personal fork of [Maccy](https://github.com/p0deje/Maccy), based on 2.8.0 with upstream fixes. Not an official release.
+> Adds a window pin button to the left of “Maccy”. When enabled, switching apps and selecting clipboard items leave the window visible. Click again to restore normal behavior; Esc still dismisses it.
+>
+> **Cloud build:** Open Actions → “Build Maccy with window pin”. Download the `Maccy-window-pin-arm64` artifact from a successful run and extract the application ZIP. Builds are ad-hoc signed for personal use, without Apple notarization. Quit your existing Maccy before launching this version. Original MIT license and copyright notices are preserved.
+
 > [!WARNING]
 > **Beware of fake websites impersonating Maccy.** Malicious sites (such as `maccyapp.net` and `maccyapp.com`) distribute malware disguised as Maccy. [**maccy.app**](https://maccy.app) is the **only** official website.
 

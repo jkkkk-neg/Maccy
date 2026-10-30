@@ -1,0 +1,48 @@
+name: Build Maccy with window pin
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [codex/window-pin]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: xcode-27
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v6
+      - name: Select Xcode
+        run: |
+          xcodebuild -version
+      - name: Build for Apple Silicon
+        run: |
+          set -o pipefail
+          xcodebuild -project Maccy.xcodeproj -scheme Maccy \
+            -configuration Release -destination 'generic/platform=macOS' \
+            -derivedDataPath build \
+            ARCHS=arm64 CODE_SIGNING_ALLOWED=NO DEVELOPMENT_TEAM= \
+            build 2>&1 | tee build.log
+      - name: Sign and package for local use
+        run: |
+          app=build/Build/Products/Release/Maccy.app
+          codesign --force --deep --sign - "$app"
+          codesign --verify --deep --strict --verbose=2 "$app"
+          mkdir -p dist
+          ditto -c -k --sequesterRsrc --keepParent "$app" dist/Maccy-window-pin-arm64.zip
+      - name: Upload application
+        uses: actions/upload-artifact@v4
+        with:
+          name: Maccy-window-pin-arm64
+          path: dist/Maccy-window-pin-arm64.zip
+          if-no-files-found: error
+          retention-days: 7
+      - name: Upload build log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-log
+          path: build.log
+          retention-days: 7

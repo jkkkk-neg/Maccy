@@ -86,7 +86,11 @@ class Popup {
     KeyboardShortcuts.enable(.popup)
   }
 
-  func close() {
+  func close(afterSelectingItem: Bool = false) {
+    if afterSelectingItem && Defaults[.keepWindowOnTop] {
+      reset()
+      return
+    }
     AppState.shared.appDelegate?.panel.close()  // close() calls reset
   }
 

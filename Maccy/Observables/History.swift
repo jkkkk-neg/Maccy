@@ -352,7 +352,7 @@ class History: ItemsContainer { // swiftlint:disable:this type_body_length
     }
 
     if modifierFlags.isEmpty {
-      AppState.shared.popup.close()
+      AppState.shared.popup.close(afterSelectingItem: true)
       Clipboard.shared.copy(item.item, removeFormatting: Defaults[.removeFormattingByDefault])
       if Defaults[.pasteByDefault] {
         Clipboard.shared.paste()
@@ -360,14 +360,14 @@ class History: ItemsContainer { // swiftlint:disable:this type_body_length
     } else {
       switch HistoryItemAction(modifierFlags) {
       case .copy:
-        AppState.shared.popup.close()
+        AppState.shared.popup.close(afterSelectingItem: true)
         Clipboard.shared.copy(item.item)
       case .paste:
-        AppState.shared.popup.close()
+        AppState.shared.popup.close(afterSelectingItem: true)
         Clipboard.shared.copy(item.item)
         Clipboard.shared.paste()
       case .pasteWithoutFormatting:
-        AppState.shared.popup.close()
+        AppState.shared.popup.close(afterSelectingItem: true)
         Clipboard.shared.copy(item.item, removeFormatting: true)
         Clipboard.shared.paste()
       case .unknown:
@@ -393,18 +393,18 @@ class History: ItemsContainer { // swiftlint:disable:this type_body_length
     logger.info("Copying \(item.item.title) from PasteStack")
 
     if modifierFlags.isEmpty {
-      AppState.shared.popup.close()
+      AppState.shared.popup.close(afterSelectingItem: true)
       Clipboard.shared.copy(item.item, removeFormatting: Defaults[.removeFormattingByDefault])
     } else {
       switch HistoryItemAction(modifierFlags) {
       case .copy:
-        AppState.shared.popup.close()
+        AppState.shared.popup.close(afterSelectingItem: true)
         Clipboard.shared.copy(item.item)
       case .paste:
-        AppState.shared.popup.close()
+        AppState.shared.popup.close(afterSelectingItem: true)
         Clipboard.shared.copy(item.item)
       case .pasteWithoutFormatting:
-        AppState.shared.popup.close()
+        AppState.shared.popup.close(afterSelectingItem: true)
         Clipboard.shared.copy(item.item, removeFormatting: true)
         Clipboard.shared.paste()
       case .unknown:

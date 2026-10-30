@@ -23,3 +23,5 @@
 "history_item_image_accessibility_label_no_app" = "Image, %dx%d";
 "history_item_image_accessibility_generic" = "Image";
 "toolbar_remove_paste_stack_action" = "Stop paste stack";
+"window_pin_action" = "Keep window on top";
+"window_unpin_action" = "Stop keeping window on top";

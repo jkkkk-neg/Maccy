@@ -135,6 +135,29 @@ class MaccyUITests: XCTestCase {
     assertPasteboardStringEquals(copy2)
   }
 
+  func testWindowPinKeepsHistoryOpenAfterCopy() {
+    popUpWithMouse()
+    let windowPin = app.buttons["keep-window-on-top"]
+    assertExists(windowPin)
+    windowPin.click()
+
+    scrollIntoViewIfNeeded(items[copy2].firstMatch)
+    items[copy2].firstMatch.click()
+    assertPasteboardStringEquals(copy2)
+    assertExists(items[copy1])
+
+    // Explicit dismissal must still work while pinned.
+    app.typeKey(.escape, modifierFlags: [])
+    assertPopupDismissed()
+    popUpWithMouse()
+    assertExists(windowPin)
+
+    // Turning the pin off restores dismiss-on-copy.
+    windowPin.click()
+    items[copy1].firstMatch.click()
+    assertPopupDismissed()
+  }
+
   func testCopyWithEnter() {
     popUpWithMouse()
     scrollIntoViewIfNeeded(items[copy2].firstMatch)

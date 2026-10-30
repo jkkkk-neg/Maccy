@@ -204,6 +204,10 @@ class FloatingPanel<Content: View>: NSPanel, NSWindowDelegate {
 
   func windowDidResignKey(_ notification: Notification) {
     AppState.shared.preview.disableAutoOpen()
+    if Defaults[.keepWindowOnTop] {
+      // Restore the global shortcut while the pinned panel is not receiving keys.
+      AppState.shared.popup.reset()
+    }
   }
 
   // Close automatically when out of focus, e.g. outside click.

@@ -144,8 +144,16 @@ class Clipboard {
     let keyVUp = CGEvent(keyboardEventSource: source, virtualKey: vCode, keyDown: false)
     keyVDown?.flags = cmdFlag
     keyVUp?.flags = cmdFlag
-    keyVDown?.post(tap: .cgSessionEventTap)
-    keyVUp?.post(tap: .cgSessionEventTap)
+    if Defaults[.keepWindowOnTop] {
+      // A visible nonactivating panel borrows keyboard focus from the frontmost app.
+      // Send paste to that app explicitly so it cannot land in Maccy's search field.
+      guard let target = sourceApp, target.processIdentifier != ProcessInfo.processInfo.processIdentifier else { return }
+      keyVDown?.postToPid(target.processIdentifier)
+      keyVUp?.postToPid(target.processIdentifier)
+    } else {
+      keyVDown?.post(tap: .cgSessionEventTap)
+      keyVUp?.post(tap: .cgSessionEventTap)
+    }
   }
 
   func clear() {
@@ -306,7 +314,12 @@ class Clipboard {
     }
 
     NSApp.activate(ignoringOtherApps: true)
-    NSApp.hide(self)
+    if Defaults[.keepWindowOnTop] {
+      // Restore focus without hiding the pinned panel along with the application.
+      app.activate(options: [])
+    } else {
+      NSApp.hide(self)
+    }
   }
 
   private func clearFormatting(_ contents: [HistoryItemContent]) -> [HistoryItemContent] {

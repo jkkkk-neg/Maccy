@@ -10,9 +10,27 @@ struct ListHeaderView: View {
   @Environment(\.scenePhase) private var scenePhase
 
   @Default(.showTitle) private var showTitle
+  @Default(.keepWindowOnTop) private var keepWindowOnTop
+
+  private var windowPinAction: LocalizedStringKey {
+    keepWindowOnTop ? "window_unpin_action" : "window_pin_action"
+  }
 
   var body: some View {
     HStack {
+      ToolbarButton {
+        keepWindowOnTop.toggle()
+      } label: {
+        Image(systemName: keepWindowOnTop ? "pin.fill" : "pin")
+          .foregroundStyle(keepWindowOnTop ? Color.accentColor : Color.secondary)
+          .frame(width: 23)
+      }
+      .focusable(false)
+      .help(Text(windowPinAction))
+      .accessibilityLabel(Text(windowPinAction))
+      .accessibilityAddTraits(keepWindowOnTop ? [.isSelected] : [])
+      .accessibilityIdentifier("keep-window-on-top")
+
       if showTitle {
         Text("Maccy")
           .foregroundStyle(.secondary)

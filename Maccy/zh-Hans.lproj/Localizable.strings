@@ -30,3 +30,5 @@
 "history_item_image_accessibility_label_no_app" = "图像，%d×%d";
 "history_item_image_accessibility_generic" = "图像";
 "toolbar_remove_paste_stack_action" = "停止粘贴堆栈";
+"window_pin_action" = "窗口始终置顶";
+"window_unpin_action" = "取消窗口置顶";
